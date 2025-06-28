@@ -1,0 +1,23 @@
+torch
+torchvision 
+torchaudio
+--index-url https://download.pytorch.org/whl/cu121
+transformers
+accelerate
+datasets
+evaluate
+deepspeed
+wandb
+trl
+peft
+bitsandbytes
+huggingface_hub
+tokenizers
+verilog-eval
+numpy
+pandas
+scikit-learn
+matplotlib
+seaborn
+jupyter
+ipywidgets

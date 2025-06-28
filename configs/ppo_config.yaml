@@ -1,0 +1,30 @@
+ppo:
+  model_name: "deepseek-verilog-sft"
+  learning_rate: 1.41e-5
+  batch_size: 32
+  mini_batch_size: 4
+  gradient_accumulation_steps: 8
+  optimize_cuda_cache: true
+  early_stopping: true
+  target_kl: 0.1
+  ppo_epochs: 4
+  seed: 42
+  use_score_scaling: true
+  use_score_norm: true
+  score_clip: 0.5
+  cliprange: 0.2
+  cliprange_value: 0.2
+  vf_coef: 0.1
+  
+reward_model:
+  syntax_weight: 0.3
+  functional_weight: 0.4
+  quality_weight: 0.2
+  adherence_weight: 0.1
+  
+generation:
+  max_length: 1024
+  temperature: 0.7
+  top_p: 0.9
+  do_sample: true
+  pad_token_id: 0
