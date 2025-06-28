@@ -5,7 +5,6 @@ Comprehensive evaluation of trained models on test datasets.
 """
 
 import sys
-import os
 import logging
 import argparse
 import json

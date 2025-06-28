@@ -4,7 +4,6 @@ Comprehensive Evaluation Framework for Verilog Code Generation
 Evaluates syntax, functionality, and code quality of generated Verilog.
 """
 
-import os
 import json
 import logging
 import numpy as np
@@ -394,11 +393,5 @@ def create_evaluator(model: PreTrainedModel,
     return VerilogEvaluator(model, tokenizer, config)
 
 
-def main():
-    """Test evaluator"""
-    logger.info("Testing Verilog evaluator...")
-    logger.info("Evaluator test - placeholder")
-
-
 if __name__ == "__main__":
-    main()
+    pass

@@ -330,13 +330,5 @@ def train_verilog_model(
     return trainer
 
 
-def main():
-    """Test training setup"""
-    logger.info("Testing training setup...")
-    
-    # This would be called with actual model and data in practice
-    logger.info("Training setup test - placeholder")
-    
-
 if __name__ == "__main__":
-    main()
+    pass

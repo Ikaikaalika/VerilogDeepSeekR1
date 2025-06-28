@@ -253,31 +253,5 @@ def create_model_for_training(model_name: str = "deepseek-ai/deepseek-r1-distill
     return model_wrapper.setup_for_training()
 
 
-def main():
-    """Test model setup"""
-    logger.info("Testing model setup...")
-    
-    try:
-        model_wrapper = DeepSeekVerilogModel()
-        model, tokenizer = model_wrapper.setup_for_training()
-        
-        # Print model info
-        info = model_wrapper.get_model_info()
-        logger.info("Model information:")
-        for key, value in info.items():
-            logger.info(f"  {key}: {value}")
-            
-        # Test tokenization
-        test_input = "Generate Verilog code for a 4-bit counter"
-        tokens = tokenizer(test_input, return_tensors="pt")
-        logger.info(f"Test tokenization successful. Input tokens: {tokens['input_ids'].shape}")
-        
-        logger.info("Model setup test completed successfully!")
-        
-    except Exception as e:
-        logger.error(f"Model setup test failed: {e}")
-        raise
-
-
 if __name__ == "__main__":
-    main()
+    pass

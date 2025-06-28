@@ -31,9 +31,9 @@ class ThunderLauncher:
         self.memory_per_gpu = memory_per_gpu
         self.timeout_hours = timeout_hours
         
-        # Thunder-specific configurations
-        self.partition = "gpu"  # Adjust based on Thunder cluster setup
-        self.qos = "normal"     # Adjust based on Thunder QoS options
+        # Thunder-specific configurations - UPDATE THESE FOR YOUR CLUSTER
+        self.partition = "gpu"  # Configure based on your Thunder cluster partition names
+        self.qos = "normal"     # Configure based on your Thunder cluster QoS policies
         
     def generate_slurm_script(self, 
                              job_name: str,
@@ -63,7 +63,7 @@ echo "Nodes: $SLURM_JOB_NUM_NODES"
 echo "GPUs per node: {self.gpus_per_node}"
 echo "Total GPUs: {self.total_gpus}"
 
-# Load modules (adjust based on Thunder environment)
+# Load modules - UPDATE THESE FOR YOUR THUNDER ENVIRONMENT
 module load cuda/12.1
 module load python/3.10
 module load nccl/2.18

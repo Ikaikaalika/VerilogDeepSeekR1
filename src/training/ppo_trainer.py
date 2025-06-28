@@ -15,7 +15,6 @@ from dataclasses import dataclass, field
 from transformers import PreTrainedModel, PreTrainedTokenizer
 from datasets import Dataset
 from trl import PPOTrainer, PPOConfig, AutoModelForCausalLMWithValueHead
-from trl.core import LengthSampler
 import wandb
 
 from .reward_model import VerilogRewardModel, VerilogRewardConfig
@@ -432,13 +431,5 @@ def create_ppo_trainer(
     )
 
 
-def main():
-    """Test PPO trainer setup"""
-    logger.info("Testing PPO trainer setup...")
-    
-    # This would be called with actual models and data in practice
-    logger.info("PPO trainer setup test - placeholder")
-
-
 if __name__ == "__main__":
-    main()
+    pass

@@ -4,16 +4,13 @@ Verilog Dataset Preprocessor
 Processes raw Verilog datasets into instruction-following format for fine-tuning.
 """
 
-import os
 import re
 import json
 import logging
 from pathlib import Path
 from typing import List, Dict, Tuple, Optional
-import pandas as pd
 from tqdm import tqdm
 import random
-import hashlib
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
@@ -254,29 +251,6 @@ class VerilogPreprocessor:
         logger.info(f"Processed {len(dataset)} entries from OpenROAD")
         return dataset
         
-    def generate_synthetic_data(self, count: int = 1000) -> List[Dict]:
-        """Generate synthetic Verilog instruction-code pairs"""
-        logger.info(f"Generating {count} synthetic Verilog examples...")
-        dataset = []
-        
-        # Templates for synthetic data generation
-        templates = [
-            {
-                'instruction': "Create a {bit_width}-bit {component_type}",
-                'components': ['counter', 'adder', 'multiplexer', 'decoder', 'register'],
-                'bit_widths': [4, 8, 16, 32]
-            },
-            {
-                'instruction': "Design a {functionality} module with {port_count} ports",
-                'functionalities': ['ALU', 'memory controller', 'state machine', 'shift register'],
-                'port_counts': [2, 4, 8, 16]
-            }
-        ]
-        
-        # This would be expanded with actual code generation logic
-        # For now, return empty list as this requires complex logic
-        logger.info("Synthetic data generation placeholder - implement as needed")
-        return dataset
         
     def create_instruction_format(self, entry: Dict) -> Dict:
         """Convert entry to instruction-following format"""

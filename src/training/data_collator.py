@@ -278,39 +278,5 @@ def create_verilog_data_collator(tokenizer: PreTrainedTokenizer,
     return VerilogDataCollator(**kwargs)
 
 
-def test_data_collator():
-    """Test the data collator functionality"""
-    from transformers import AutoTokenizer
-    
-    # This is a test function - would need actual tokenizer in practice
-    logger.info("Testing data collator...")
-    
-    # Mock test data
-    examples = [
-        {
-            'instruction': 'Create a 4-bit counter in Verilog',
-            'output': '''module counter_4bit(
-    input clk,
-    input reset,
-    output reg [3:0] count
-);
-
-always @(posedge clk or posedge reset) begin
-    if (reset)
-        count <= 4'b0000;
-    else
-        count <= count + 1;
-end
-
-endmodule'''
-        }
-    ]
-    
-    logger.info("Example format test:")
-    collator = VerilogDataCollator(tokenizer=None)  # Mock
-    formatted = collator.format_instruction(examples[0]['instruction'], examples[0]['output'])
-    logger.info(f"Formatted text:\n{formatted}")
-    
-
 if __name__ == "__main__":
-    test_data_collator()
+    pass

@@ -14,7 +14,7 @@ from dataclasses import dataclass
 import numpy as np
 import torch
 import torch.nn as nn
-from transformers import PreTrainedModel, PreTrainedTokenizer
+from transformers import PreTrainedTokenizer
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
