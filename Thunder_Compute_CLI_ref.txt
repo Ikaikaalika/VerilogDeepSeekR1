@@ -1,0 +1,302 @@
+CLI Reference
+Comprehensive reference for the Thunder Compute CLI. Manage instances (create, start, stop, delete), configure GPUs/CPUs, handle files, and use snapshots.
+​
+Account Management
+
+​
+Login
+
+Authenticate the CLI, which provides a link to the console where you can generate an API token.
+
+
+Copy
+
+Ask AI
+tnr login
+Under the hood, this generates and saves an API token to ~/.thunder/token. You can store a token file here to programmatically authenticate, or by setting the TNR_API_TOKEN environment variable in your shell.
+
+​
+Logout
+
+Log out of the CLI with:
+
+
+Copy
+
+Ask AI
+tnr logout
+This deletes the stored API token.
+
+​
+API Token Management
+
+Generate/manage tokens in the console
+Tokens never expire but can be revoked
+Use unique tokens per device
+​
+Managing Instances
+
+​
+Create an Instance
+
+Create a new Thunder Compute instance:
+
+
+Copy
+
+Ask AI
+tnr create
+This creates a new instance with default configuration and automatically assigns an instance ID.
+
+​
+CPU Configuration
+
+Configure custom vCPU count:
+
+
+Copy
+
+Ask AI
+tnr create --vcpus <vcpu_count>
+Each vCPU comes with 8GB of RAM. For example, a 4 core instance has 32GB of RAM, and an 8 core instance has 64GB of RAM.
+
+By default, 4 vCPUs and 32GB of memory are included with your instance. Additional vCPUs are billed hourly at the rates shown here
+​
+GPU Configuration
+
+Specify a GPU type:
+
+
+Copy
+
+Ask AI
+tnr create --gpu <gpu_type>
+Available GPU types:
+
+t4: NVIDIA T4 (16GB VRAM) - Best for most ML workloads
+a100 (default): NVIDIA A100 (40GB VRAM) - For large models and high-performance computing
+a100xl : NVIDIA A100 (80GB VRAM) - For even larger models, the biggest and the best
+You can use the --num-gpus flag to specify multiple GPU configurations:
+
+
+Copy
+
+Ask AI
+tnr create --gpu <gpu_type> --num-gpus <n>
+​
+Template Configuration
+
+Templates make it easy to quickly launch common AI tools. Your instance will already be configured with everything you need to get running to generate images, run an LLM, and more.
+
+To use a template, add the --template flag when creating an instance:
+
+
+Copy
+
+Ask AI
+tnr create --template <template_name>
+Available templates:
+
+ollama: Ollama server environment
+comfy-ui: ComfyUI for AI image generation
+webui-forge: WebUI Forge for Stable Diffusion
+After instance creation, start the server using start-<template_name> when connected. For example:
+
+
+Copy
+
+Ask AI
+start-ollama
+​
+Mode Configuration
+
+Choose between prototyping and production modes:
+
+
+Copy
+
+Ask AI
+tnr create --mode <mode>
+Available modes:
+
+prototyping (default): Development mode optimized for intermittent workloads
+production: Premium instance with maximum compatibility, stability, and reliability for production workloads
+​
+Stop an Instance
+
+Stops a running instance.
+
+
+Copy
+
+Ask AI
+tnr stop <instance_ID>
+Stopped instances continue to accrue storage cost.
+​
+Start an Instance
+
+Starts a stopped instance.
+
+
+Copy
+
+Ask AI
+tnr start <instance_ID>
+​
+Delete an Instance
+
+
+Copy
+
+Ask AI
+tnr delete <instance_ID>
+This action permanently removes an instance and all associated data.
+​
+Using instances
+
+​
+Connect to an Instance
+
+Use the connect command to access your instance. This wraps SSH, managing keys while automatically setting up everything you need to get started.
+
+
+Copy
+
+Ask AI
+tnr connect <instance_ID>
+The instance must be running before you can connect to it. See if the instance is running and get the instance ID (default 0) with tnr status.
+
+​
+Port Forwarding
+
+Connect with port forwarding with the -t or --tunnel flag:
+
+
+Copy
+
+Ask AI
+tnr connect <instance_ID> -t PORT1 -t PORT2
+Features:
+
+Forward multiple ports using repeated -t/--tunnel flags
+Example: tnr connect 0 -t 8000 -t 8080 forwards both ports 8000 and 8080
+Enables local access to remote web servers, APIs, and services
+​
+Copy Files
+
+Transfer files between local and remote instance with the scp command:
+
+
+Copy
+
+Ask AI
+tnr scp <source_path> <destination_path>
+You can transfer files in either direction, from your local machine to an instance, or from the instance to your local machine. You indicate the direction of transfer with the path format, shown below.
+
+Path format:
+
+Remote: instance_id:path (e.g., 0:/home/user/data)
+Local: Standard paths (e.g., ./data or /home/user/file.txt)
+Must specify exactly one remote and one local path
+Paths can be either absolute or relative.
+Examples:
+
+
+Copy
+
+Ask AI
+# Upload to instance
+tnr scp ./local_file.txt 0:/remote/path/
+
+# Download from instance
+tnr scp 0:/remote/file.txt ./local_path/
+File transfers have a 60-second connection timeout. SSH key setup, compression, and ~/ expansion are handled automatically.
+​
+Managing Snapshots
+
+Snapshots capture the state of a stopped instance’s disk, allowing you to create new instances from that point in time.
+
+​
+Create a Snapshot
+
+Create a snapshot from a stopped instance:
+
+
+Copy
+
+Ask AI
+tnr snapshot <instance_ID> <snapshot_name>
+<instance_ID>: The ID of the instance to snapshot. The instance must be stopped.
+<snapshot_name>: A unique name for your snapshot.
+Must contain only lowercase letters (a-z), numbers (0-9), and hyphens (-).
+Must be between 1 and 62 characters long.
+Snapshots are stored compressed to save space. You can view the compressed size using the --list command after creation.
+
+You can use a snapshot as a template to launch new instances. The snapshot defines the initial disk content and size. While you can modify other configuration options (like vCPU count or GPU type) during the tnr create command, the new instance’s disk size must be equal to or greater than the original instance’s disk size. Decreasing the disk size is not supported.
+
+Copy
+
+Ask AI
+tnr create --template <snapshot_name> [--gpu <new_gpu_type>] #etc
+​
+List Snapshots
+
+List all available snapshots and their details, including compressed size:
+
+
+Copy
+
+Ask AI
+tnr snapshot --list
+​
+Delete a Snapshot
+
+Delete a specific snapshot by name:
+
+
+Copy
+
+Ask AI
+tnr snapshot --delete <snapshot_name>
+This action permanently deletes the snapshot. It does not affect instances created from this snapshot.
+​
+System Management
+
+​
+Modify Instance
+
+Modify the instance’s vCPU count (and RAM), GPU type, or disk size:
+
+
+Copy
+
+Ask AI
+tnr modify <instance_ID> \
+  --disk-size-gb <new_size_GB> \
+  --gpu <new_gpu_type> \
+  --vcpus <new_vcpu_count> \
+  --mode <mode>
+All flags are optional, but at least one change must be provided.
+
+These changes will affect the billing price of the instance.
+
+Instances must be stopped to modify the vCPU count/RAM, GPU type, or mode. You can resize disk at any time.
+
+Each additional vCPU adds 8GB of RAM to your instance.
+
+Available modes:
+
+prototyping (default): Optimized for cost-effective development
+production: Premium instances with maximum compatibility, stability, and reliability
+Storage can only be increased, not decreased. For smaller storage needs, create a new instance and transfer your files.
+​
+View Instance Status
+
+List all instances and details including instance_ID, IP Address, Disk Size, GPU Type, GPU Count, vCPU Count, RAM, and Template:
+
+
+Copy
+
+Ask AI
+tnr status
+use the --no-wait flag to disable automatic monitoring for status updates

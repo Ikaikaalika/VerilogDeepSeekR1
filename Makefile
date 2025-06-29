@@ -15,6 +15,11 @@ help:
 	@echo "  setup-data   - Download and preprocess datasets"
 	@echo "  train-sft    - Run supervised fine-tuning"
 	@echo "  train-ppo    - Run PPO training"
+	@echo "  train-thunder - Run distributed training on Thunder"
+	@echo "  thunder-create - Create Thunder Compute instance"
+	@echo "  thunder-setup  - Setup environment on Thunder instance"
+	@echo "  thunder-train  - Run training on Thunder instance"
+	@echo "  thunder-full   - Complete Thunder workflow (create+setup+train)"
 	@echo "  evaluate     - Evaluate trained model"
 	@echo "  deploy       - Deploy model for production"
 
@@ -81,6 +86,19 @@ train-ppo:
 
 train-thunder:
 	bash scripts/train_thunder.sh --phase both
+
+# Thunder Compute management
+thunder-create:
+	python scripts/setup_thunder.py --action create --gpu-type a100 --num-gpus 8
+
+thunder-setup:
+	python scripts/setup_thunder.py --action setup --instance-id $(INSTANCE_ID)
+
+thunder-train:
+	python scripts/setup_thunder.py --action train --instance-id $(INSTANCE_ID) --phase both
+
+thunder-full:
+	python scripts/setup_thunder.py --action full --gpu-type a100 --num-gpus 8 --phase both
 
 # Evaluation and deployment
 evaluate:
