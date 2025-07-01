@@ -15,10 +15,10 @@ lora:
 training:
   output_dir: "./checkpoints"
   num_train_epochs: 3
-  per_device_train_batch_size: 4
-  per_device_eval_batch_size: 4
-  gradient_accumulation_steps: 8
-  eval_accumulation_steps: 4
+  per_device_train_batch_size: 2  # Reduced for cost efficiency
+  per_device_eval_batch_size: 2   # Reduced for cost efficiency
+  gradient_accumulation_steps: 16 # Increased to maintain effective batch size
+  eval_accumulation_steps: 8      # Increased proportionally
   learning_rate: 2e-5
   weight_decay: 0.1
   warmup_steps: 500

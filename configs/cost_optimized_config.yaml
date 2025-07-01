@@ -1,0 +1,29 @@
+# Cost-optimized configurations for different training scenarios
+
+development:
+  gpu_type: "t4"
+  gpu_count: 1
+  per_device_batch_size: 1
+  gradient_accumulation_steps: 32
+  max_steps: 100  # Quick testing
+  
+small_scale:
+  gpu_type: "a100"
+  gpu_count: 2
+  per_device_batch_size: 2
+  gradient_accumulation_steps: 16
+  max_steps: 1000
+  
+production:
+  gpu_type: "a100"
+  gpu_count: 4  # Reduced from 8 for cost savings
+  per_device_batch_size: 2
+  gradient_accumulation_steps: 16
+  num_train_epochs: 3
+  
+large_scale:
+  gpu_type: "a100xl"
+  gpu_count: 8
+  per_device_batch_size: 4
+  gradient_accumulation_steps: 8
+  num_train_epochs: 3

@@ -38,9 +38,18 @@ class ThunderManager:
                        gpu_type: str = "a100",
                        num_gpus: int = 8,
                        vcpus: int = 16,
-                       mode: str = "production") -> str:
-        """Create a new Thunder Compute instance"""
-        logger.info(f"Creating Thunder instance with {num_gpus}x{gpu_type} GPUs...")
+                       mode: str = "production",
+                       cost_tier: str = "standard") -> str:
+        """Create a new Thunder Compute instance with cost optimization"""
+        # Apply cost optimization based on tier
+        if cost_tier == "development":
+            gpu_type, num_gpus, vcpus = "t4", 1, 4
+        elif cost_tier == "small_scale":
+            gpu_type, num_gpus, vcpus = "a100", 2, 8
+        elif cost_tier == "cost_optimized":
+            gpu_type, num_gpus, vcpus = "a100", 4, 12
+            
+        logger.info(f"Creating Thunder instance ({cost_tier}) with {num_gpus}x{gpu_type} GPUs...")
         
         cmd = [
             'tnr', 'create',
@@ -190,6 +199,9 @@ def main():
                        help='GPU type to use')
     parser.add_argument('--num-gpus', type=int, default=8, help='Number of GPUs')
     parser.add_argument('--vcpus', type=int, default=16, help='Number of vCPUs')
+    parser.add_argument('--cost-tier', default='standard', 
+                       choices=['development', 'small_scale', 'cost_optimized', 'standard'],
+                       help='Cost optimization tier')
     parser.add_argument('--phase', default='both', choices=['sft', 'ppo', 'both'],
                        help='Training phase')
     parser.add_argument('--wandb-project', default='deepseek-verilog-thunder',
@@ -207,7 +219,8 @@ def main():
             instance_id = manager.create_instance(
                 gpu_type=args.gpu_type,
                 num_gpus=args.num_gpus,
-                vcpus=args.vcpus
+                vcpus=args.vcpus,
+                cost_tier=args.cost_tier
             )
             manager.wait_for_instance(instance_id)
             
